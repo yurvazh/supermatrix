@@ -27,6 +27,7 @@ public:
     vector<T>& operator[](int i) {return v[i];} ;
     const vector<T>& operator[](int i) const {return v[i];} ;
     supermatrix tr();
+    long long det();
     template<typename Type> friend istream& operator>>(istream&, supermatrix<Type>&);
     template<typename Type> friend ostream& operator<<(ostream&, supermatrix<Type>&);
 };
@@ -79,7 +80,37 @@ const supermatrix<T> supermatrix<T>::operator*(const supermatrix<T>& a) const {
         return supermatrix(res);
     }
 }
-
+template <typename T>
+long long supermatrix<T>::det() {
+    if (n != m) {
+        throw "matrix is not square";
+    } else if (n == 1) {
+        return v[0][0];
+    } else if (n == 2) {
+        return v[0][0] * v[1][1] - v[0][1] * v[1][0];
+    } else {
+        vector<vector<int>> ap(n - 1);
+        long long sum = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    if (k != i) {
+                        ap[j - 1].push_back(v[j][k]);
+                    }
+                }
+            }
+            if (i % 2 == 0) {
+                sum += v[0][i] * supermatrix(ap).det();
+            } else {
+                sum -= v[0][i] * supermatrix(ap).det();
+            }
+            for (int k = 0; k < n - 1; k++) {
+                ap[k].resize(0);
+            }
+        }
+        return sum;
+    }
+}
 template<typename T>
 const supermatrix<T> supermatrix<T>::operator^(int p) const {
     if (n != m) {

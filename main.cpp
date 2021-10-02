@@ -52,5 +52,17 @@ int main() {
     } catch (const char *msg) {
         cerr << "ERROR: " << msg << endl;
     }
+    cout << "A Determinant =\n";
+    try {
+        cout << a.det() << endl;
+    } catch (const char *msg) {
+        cerr << "ERROR: " << msg << endl;
+    }
+    cout << "B Determinant =\n";
+    try {
+        cout << b.det() << endl;
+    } catch (const char *msg) {
+        cerr << "ERROR: " << msg << endl;
+    }
     return 0;
 }

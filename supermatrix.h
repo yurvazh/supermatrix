@@ -27,6 +27,7 @@ public:
     vector<T>& operator[](int i) {return v[i];} ;
     const vector<T>& operator[](int i) const {return v[i];} ;
     supermatrix tr();
+    supermatrix obr();
     long long det();
     template<typename Type> friend istream& operator>>(istream&, supermatrix<Type>&);
     template<typename Type> friend ostream& operator<<(ostream&, supermatrix<Type>&);
@@ -89,7 +90,7 @@ long long supermatrix<T>::det() {
     } else if (n == 2) {
         return v[0][0] * v[1][1] - v[0][1] * v[1][0];
     } else {
-        vector<vector<int>> ap(n - 1);
+        vector<vector<T>> ap(n - 1);
         long long sum = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 1; j < n; j++) {
@@ -155,6 +156,62 @@ supermatrix<T> supermatrix<T>::tr() {
         }
     }
     return supermatrix(res);
+}
+
+template<typename T>
+supermatrix<T> supermatrix<T>::obr() {
+    if (n != m) {
+        throw "matrix is not square";
+    } else {
+        supermatrix<T> ed(n, n);
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i != j)
+                    ed[i][j] = 0.0;
+                else
+                    ed[i][j] = 1.0;
+            }
+        }
+        supermatrix<T> matr = *this;
+        for (int i = 0; i < n; i++) {
+            bool x = false;
+            for (int j = i; j < n; j++) {
+                if (matr[j][i] != 0.0) {
+                    if (i != j) {
+                        swap(matr[i], matr[j]);
+                        swap(ed[i], ed[j]);
+                    }
+                    x = true;
+                    break;
+                }
+            }
+            if (not x) {
+                throw "impossible to find reverse matrix";
+            }
+            double k1 = matr[i][i];
+            for (int j = 0; j < n; j++) {
+                matr[i][j] /= k1;
+                ed[i][j] /= k1;
+            }
+            for (int j = i + 1; j < n; j++) {
+                double t = matr[j][i];
+                for (int k = 0; k < n; k++) {
+                    matr[j][k] -= matr[i][k] * (t / matr[i][i]);
+                    ed[j][k] -= ed[i][k] * (t / matr[i][i]);
+                }
+            }
+        }
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                double m1 = matr[i][j];
+                for (int k = 0; k < n; k++) {
+                    matr[i][k] -= matr[j][k] * (m1 / matr[j][j]);
+                    ed[i][k] -= ed[j][k] * (m1 / matr[j][j]);
+                }
+            }
+        }
+        return ed;
+    }
 }
 
 template<typename T>

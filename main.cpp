@@ -12,7 +12,7 @@ int main() {
     cout << "integers for multiplication and power: \n";
     int d, q;
     cin >> d >> q;
-    supermatrix<int> a(n, m), b(n1, m1);
+    supermatrix<double> a(n, m), b(n1, m1);
     cout << "\nfirst matrix is: \n";
     cin >> a;
     cout << "\nsecond matrix is: \n";
@@ -64,5 +64,9 @@ int main() {
     } catch (const char *msg) {
         cerr << "ERROR: " << msg << endl;
     }
+    cout << "reverse A: \n";
+    cout << a.obr();
+    cout << "reverse B: \n";
+    cout << b.obr();
     return 0;
 }

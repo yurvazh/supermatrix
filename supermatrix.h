@@ -23,7 +23,7 @@ public:
     const supermatrix operator+(const supermatrix&) const;
     const supermatrix operator*(T) const;
     const supermatrix operator^(int p) const;
-    const supermatrix operator*(const supermatrix&) const;
+    supermatrix operator*(const supermatrix&) const;
     vector<T>& operator[](int i) {return v[i];} ;
     const vector<T>& operator[](int i) const {return v[i];} ;
     supermatrix tr();
@@ -63,7 +63,7 @@ const supermatrix<T> supermatrix<T>::operator*(T k) const{
 
 template<typename T>
 
-const supermatrix<T> supermatrix<T>::operator*(const supermatrix<T>& a) const {
+supermatrix<T> supermatrix<T>::operator*(const supermatrix<T>& a) const {
     if (m != a.n) {
         throw "Multiplication is impossible";
     } else {

@@ -4,6 +4,7 @@
 using namespace std;
 
 int main() {
+    cout << "If you need to solve system of linear equations: first matrix - coefficients, second - values\n";
     int n, m, n1, m1;
     cout << "size of first matrix: \n";
     cin >> n >> m;
@@ -65,8 +66,22 @@ int main() {
         cerr << "ERROR: " << msg << endl;
     }
     cout << "reverse A: \n";
-    cout << a.obr();
+    try {
+        cout << a.obr() << endl;
+    } catch (const char *msg) {
+        cerr << "ERROR: " << msg << endl;
+    }
     cout << "reverse B: \n";
-    cout << b.obr();
+    try {
+        cout << b.obr() << endl;
+    } catch (const char *msg) {
+        cerr << "ERROR: " << msg << endl;
+    }
+    cout << "solution of the system: ";
+    try {
+        cout << a.obr() * b << endl;
+    } catch(const char *msg) {
+        cerr << "ERROR: " << msg << endl;
+    }
     return 0;
 }
